@@ -47,6 +47,9 @@ const BarcodeScanner = ({
     Quagga.init(
       {
         inputStream: {
+          constraints: {
+            facingMode: 'environment',
+          },
           name: 'Live',
           type: 'LiveStream',
           target: document.querySelector('#scanner-container')!, // Or '#yourElement' (optional)
