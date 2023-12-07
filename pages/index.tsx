@@ -6,6 +6,7 @@ import { useBeverages } from "@/components/providers/BeverageProvider";
 import CreateBeverage from "@/components/CreateBeverage/CreateBeverage";
 import InputTextOverlay from "@/components/InputTextOverlay";
 import BeverageComponent from "@/components/Beverages/BeverageComponent";
+import BarcodeScannerZxing from "@/components/BarcodeScannerZxing";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,8 +15,7 @@ export default function Home() {
   const [barcode, setBarcode] = useState("");
   const [createBeverage, setCreateBeverage] = useState(false);
   const [addingManually, setAddingManually] = useState(false);
-  const { beverageTypes, beverages } = useBeverages();
-  console.log(beverageTypes);
+  const { beverages } = useBeverages();
   useEffect(() => {
     if (barcode.length > 0) {
       getBeverage(barcode).then(({ status }) => {
@@ -32,6 +32,7 @@ export default function Home() {
         <button
           className="btn btn-primary"
           onClick={() => {
+            setBarcode("");
             setScanning(true);
           }}
         >
@@ -40,6 +41,7 @@ export default function Home() {
         <button
           className="btn"
           onClick={() => {
+            setBarcode("");
             setAddingManually(true);
           }}
         >
@@ -62,7 +64,7 @@ export default function Home() {
           ))}
       </div>
       {scanning && (
-        <BarcodeScanner
+        <BarcodeScannerZxing
           onClose={() => {
             setScanning(false);
           }}

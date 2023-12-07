@@ -27,15 +27,16 @@ const BarcodeScanner = ({
   setBarcode: React.Dispatch<React.SetStateAction<string>>;
   onClose: () => void;
 }) => {
+  const [scannedBarcode, setScannedBarcode] = useState<string>("");
+  const [certainty, setCertainty] = useState<number>(0);
   const onDetected = useCallback(
     (result: QuaggaJSResultObject) => {
       const err = getMedianOfCodeErrors(result.codeResult.decodedCodes);
-      console.log({
-        err,
-        code: result.codeResult.code,
-      });
-      // if Quagga is at least 75% certain that it read correctly, then accept the code.
-      if (err < 0.25) {
+      const certainty = 1 - err;
+      setScannedBarcode(result.codeResult.code!);
+      setCertainty(certainty);
+      // if Quagga is at least 94% certain that it read correctly, then accept the code.
+      if (certainty >= 0.9) {
         setBarcode(result.codeResult.code!);
         Quagga.stop();
         onClose();
@@ -82,6 +83,7 @@ const BarcodeScanner = ({
         <button
           className="absolute top-0 right-0 m-2"
           onClick={() => {
+            onClose();
             Quagga.stop();
           }}
         >
@@ -89,8 +91,10 @@ const BarcodeScanner = ({
         </button>
         <div
           id="scanner-container"
-          className="h-32 overflow-hidden max-w-xs md:max-w-none md:h-64"
+          className="overflow-hidden max-w-xs md:max-w-none h-64"
         />
+        <p>streckkod: {scannedBarcode}</p>
+        <p>säkerhet: {certainty}</p>
       </div>
     </div>
   );

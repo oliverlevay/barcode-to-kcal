@@ -7,6 +7,7 @@ import { createBeverage } from "@/lib/api/beverage";
 import { drinkName } from "./components/SystembolagetDrinkComponent";
 import { useBeverages } from "../providers/BeverageProvider";
 import Complete from "./components/Complete";
+import ConfirmBarcode from "./ConfirmBarcode";
 
 export default function BeverageContent({
   barcode,
@@ -15,6 +16,7 @@ export default function BeverageContent({
   barcode: string;
   onClose: () => void;
 }) {
+  const [barcodeConfirmed, setBarcodeConfirmed] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [systembolagetBeverage, setSystembolagetBeverage] =
     useState<SystembolagetDrink>();
@@ -50,6 +52,16 @@ export default function BeverageContent({
       onClose();
     }
   };
+
+  if (!barcodeConfirmed) {
+    return (
+      <ConfirmBarcode
+        barcode={barcode}
+        confirm={() => setBarcodeConfirmed(true)}
+        onClose={onClose}
+      />
+    );
+  }
   if (!name) {
     return <ChooseName onFinish={(name) => setName(name)} />;
   }

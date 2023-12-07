@@ -27,7 +27,7 @@ export async function createBeverage(beverage: Omit<Beverage, "id">) {
   });
 }
 
-export async function deleteBeverage(id: string) {
+export async function deleteBeverage(id: number) {
   return fetchApiResult<{ message: string }>(`/api/beverage/delete`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },

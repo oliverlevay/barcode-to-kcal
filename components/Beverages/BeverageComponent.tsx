@@ -1,5 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
+import { deleteBeverage } from "@/lib/api/beverage";
 import { Beverage, BeverageType } from "@prisma/client";
+import { useBeverages } from "../providers/BeverageProvider";
 
 export default function BeverageComponent({
   drink,
@@ -8,6 +10,7 @@ export default function BeverageComponent({
   drink: Beverage & { type: BeverageType };
   disableHover?: boolean;
 }) {
+  const { refetchBeverages } = useBeverages();
   return (
     <div
       className={`card w-80 shadow-xl bg-base-200 p-2 ${
@@ -15,6 +18,20 @@ export default function BeverageComponent({
         "hover:bg-base-300 selection:bg-base-300 hover:border-2"
       }`}
     >
+      <button
+        className="absolute top-0 right-0 m-2"
+        onClick={async () => {
+          const confirm = window.confirm(
+            `Är du säker på att du vill ta bort ${drink.name}?`
+          );
+          if (confirm) {
+            await deleteBeverage(drink.id);
+            refetchBeverages();
+          }
+        }}
+      >
+        ✖
+      </button>
       {drink.image && (
         <figure>
           <img className="h-24" src={drink.image} alt={drink.name} />
