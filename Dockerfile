@@ -4,8 +4,8 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install
 COPY . .
-RUN npm run build
 RUN npx prisma generate
+RUN npm run build
 
 # Stage 2: Running the app
 FROM node:alpine
