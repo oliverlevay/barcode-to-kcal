@@ -19,7 +19,7 @@ export default function Home() {
   useEffect(() => {
     if (barcode.length > 0) {
       getBeverage(barcode).then(({ status }) => {
-        if (status === 404) {
+        if (status !== 200 && status !== 201) {
           setCreateBeverage(true);
         }
       });
