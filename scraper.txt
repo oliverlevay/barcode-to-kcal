@@ -1,0 +1,11 @@
+can you write a next.js api route in typescript scraping this website
+https://www.systembolaget.se/sortiment/?q=${query}
+and getting a result of Drink[] where
+type Drink = {
+  name: string;
+  category: string;
+  country: string;
+  alcoholRate: string;
+  volume: string;
+  price: string;
+}
